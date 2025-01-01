@@ -30,7 +30,7 @@ function App() {
             text: '退出',
             action: () => {
               console.log('退出')
-              exit(0)
+              exit(1)
             }
           })
         ]
