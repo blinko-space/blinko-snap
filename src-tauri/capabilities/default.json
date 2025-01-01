@@ -2,9 +2,24 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    "core:image:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-close",
+    "core:window:allow-minimize",
+    "core:window:allow-maximize",
+    "core:window:allow-start-dragging",
+    "process:allow-exit",
+    "global-shortcut:allow-is-registered",
+		"global-shortcut:allow-register-all",
+		"global-shortcut:allow-register",
+		"global-shortcut:allow-unregister-all",
+		"global-shortcut:allow-unregister"
   ]
 }
