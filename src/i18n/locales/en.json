@@ -1,0 +1,19 @@
+{
+  "autoStart": "Auto Start",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "showWindow": "Show Window",
+  "hideWindow": "Hide Window",
+  "quit": "Quit",
+  "initError": "Initialization failed",
+  "trayExists": "Tray already exists, skipping creation",
+  "trayCreated": "Tray created successfully",
+  "trayError": "Error creating tray",
+  "settings": "Settings",
+  "generalSettings": "General",
+  "languageSettings": "Language",
+  "about": "About",
+  "version": "Version",
+  "autoStartDesc": "Launch application on system startup",
+  "loadSettingsError": "Failed to load settings"
+} 

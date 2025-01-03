@@ -1,0 +1,19 @@
+{
+  "autoStart": "自动启动",
+  "enabled": "已启用",
+  "disabled": "已禁用",
+  "showWindow": "显示窗口",
+  "hideWindow": "隐藏窗口",
+  "quit": "退出",
+  "initError": "初始化失败",
+  "trayExists": "托盘已存在，跳过创建",
+  "trayCreated": "托盘创建成功",
+  "trayError": "创建托盘时出错",
+  "settings": "设置",
+  "generalSettings": "常规",
+  "languageSettings": "语言",
+  "about": "关于",
+  "version": "版本",
+  "autoStartDesc": "系统启动时自动运行应用",
+  "loadSettingsError": "加载设置失败"
+} 

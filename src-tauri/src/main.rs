@@ -7,6 +7,7 @@ fn main() {
     let first_show = AtomicBool::new(true);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_sql::Builder::default().build())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
             window.center().unwrap();

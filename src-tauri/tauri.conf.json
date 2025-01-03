@@ -14,13 +14,13 @@
       {
         "decorations": false,
         "fullscreen": false,
-        "height": 600,
+        "height": 300,
         "width": 600,
         "resizable": false,
         "center": true,
         "title": "blinko-snap",
         "visible": false,
-        "alwaysOnTop": true
+        "alwaysOnTop": false
       }
     ],
     "security": {
@@ -37,5 +37,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "sql": {
+      "sqlite": {
+        "path": "blinko.db"
+      }
+    }
   }
 }

@@ -1,68 +1,41 @@
-import { Button } from "./components/ui/button";
-import { TrayIcon } from '@tauri-apps/api/tray';
-import { Menu, MenuItem } from '@tauri-apps/api/menu';
-import { getCurrentWindow, Window } from '@tauri-apps/api/window';
-import { Image } from '@tauri-apps/api/image';
 import { useEffect } from "react";
-import { exit } from '@tauri-apps/plugin-process';
+import { useTranslation } from 'react-i18next';
+import { Settings } from './pages/Settings';
+import { Home } from './pages/Home';
+import { RootStore } from "./store/root";
+import { BaseStore } from "./store/baseStore";
+import { AppProvider } from "./store/module/AppProvider";
+import { observer } from 'mobx-react-lite';
 
-function App() {
+const AppContent = observer(() => {
+  const { t } = useTranslation();
+  const base = RootStore.Get(BaseStore);
+
   useEffect(() => {
-    async function setupTray() {
-      const existingTray = await TrayIcon.getById("test");
-      if (existingTray) return
+    const init = async () => {
+      try {
+        await base.initApp();
+      } catch (error) {
+        console.error(t('initError'), error);
+      }
+    };
 
-      const mainWindow = Window.getCurrent();
-      const menu = await Menu.new({
-        items: [
-          await MenuItem.new({
-            id: 'show',
-            text: 'Show Window',
-            action: () => mainWindow.show(),
-          }),
-          await MenuItem.new({
-            id: 'hide',
-            text: 'Hide Window',
-            action: () => getCurrentWindow().hide(),
-          }),
-          await MenuItem.new({
-            id: 'quit',
-            text: '退出',
-            action: () => {
-              console.log('退出')
-              exit(1)
-            }
-          })
-        ]
-      });
-
-      const icon = await Image.fromPath('../src-tauri/icons/icon.png');
-
-      await TrayIcon.new({
-        id: 'test',
-        menu,
-        icon,
-        menuOnLeftClick: false,
-        // action: async (event) => {
-        //   if (event.type === 'Click' && event.button === 'Left') {
-        //     await mainWindow.show();
-        //     await mainWindow.center();
-        //   }
-        // }
-      });
-    }
-
-    setupTray().catch(console.error);
+    init().catch(console.error);
   }, []);
 
   return (
-    <div data-tauri-drag-region className="h-screen w-screen flex items-center justify-center">
-      <div className="p-4 flex flex-col gap-4">
-        <Button variant="default">Default Button</Button>
-        <Button variant="destructive">Destructive Button</Button>
-        <Button variant="outline">Outline Button</Button>
-      </div>
+    <div data-tauri-drag-region className="h-screen w-screen flex items-center justify-center bg-background">
+      {base.currentRoute}
+      {base.currentRoute === 'main' ? <Home /> : <Settings />}
     </div>
+  );
+});
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 
