@@ -20,7 +20,12 @@
         "center": true,
         "title": "blinko-snap",
         "visible": false,
-        "alwaysOnTop": false
+        "maximized": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "windowEffects": {
+          "effects": ["mica"]
+        }
       }
     ],
     "security": {

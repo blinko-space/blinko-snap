@@ -4,9 +4,11 @@ import { Store } from './standard/base';
 import { StorageState } from './standard/StorageState';
 import { setupTray } from '@/lib/tray';
 import { initialize, setSetting } from '@/lib/sql';
-import { initializeI18n } from '@/lib/i18n';
 import { RootStore } from './root';
 import { BlinkoSnapStore } from './blinkoSnapStore';
+import { BlinkoStore } from './blinkoStore';
+import { register, unregister } from '@tauri-apps/plugin-global-shortcut'
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 export interface Route {
   title: string;
@@ -16,6 +18,7 @@ export interface Route {
 
 export class BaseStore implements Store {
   sid = 'baseStore';
+  theme = 'dark';
 
   constructor() {
     makeAutoObservable(this);
@@ -54,32 +57,58 @@ export class BaseStore implements Store {
     this.locale.save(locale);
   }
 
-  // Window state
-  isVisible = false;
-
-  setVisible(visible: boolean) {
-    this.isVisible = visible;
+  toggleVisible() {
+    console.log('toggleVisible')
+    const window = getCurrentWindow();
+    window.isVisible().then((visible: boolean) => {
+      if (visible) {
+        window.hide();
+      } else {
+        window.show();
+        window.setFocus();
+      }
+    });
   }
 
-  toggleVisible() {
-    this.isVisible = !this.isVisible;
+  async registerShortcut(shortcut: string) {
+    await register(shortcut, (event) => {
+      if (event.state === 'Pressed') {
+        this.toggleVisible()
+      }
+    })
+  }
+
+  async initTheme() {
+    const window = getCurrentWindow();
+    window.theme().then((theme: string) => {
+      this.theme = theme;
+    });
+    await getCurrentWindow().onThemeChanged(({ payload: theme }) => {
+      this.theme = theme;
+    });
   }
 
   async initApp() {
     try {
       // Initialize all core services in parallel
       await Promise.all([
+        this.initTheme(),
         initialize(),  // Database initialization
         setupTray(),     // System tray setup
-        initializeI18n() // Internationalization setup
+
       ]);
 
       const settings = await RootStore.Get(BlinkoSnapStore).settings.call();
-      console.log(settings, 'settings');
       if (!settings?.isFirstLoaded) {
         this.navigate('settings');
         await setSetting('isFirstLoaded', 'true');
       }
+      if (settings?.shortcut) {
+        this.registerShortcut(settings.shortcut)
+      } else {
+        this.registerShortcut('CommandOrControl+Space')
+      }
+      RootStore.Get(BlinkoStore).loadAllData()
     } catch (error) {
       console.error('Application initialization failed:', error);
       throw error;

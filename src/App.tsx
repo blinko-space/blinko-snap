@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useTranslation } from 'react-i18next';
 import { Settings } from './pages/Settings';
 import { Home } from './pages/Home';
 import { RootStore } from "./store/root";
@@ -8,7 +7,6 @@ import { AppProvider } from "./store/module/AppProvider";
 import { observer } from 'mobx-react-lite';
 
 const AppContent = observer(() => {
-  const { t } = useTranslation();
   const base = RootStore.Get(BaseStore);
 
   useEffect(() => {
@@ -16,7 +14,7 @@ const AppContent = observer(() => {
       try {
         await base.initApp();
       } catch (error) {
-        console.error(t('initError'), error);
+        console.error(error);
       }
     };
 
@@ -24,8 +22,7 @@ const AppContent = observer(() => {
   }, []);
 
   return (
-    <div data-tauri-drag-region className="h-screen w-screen flex items-center justify-center bg-background">
-      {base.currentRoute}
+    <div data-tauri-drag-region className={`${base.theme} h-screen w-screen flex items-center justify-center rounded-2xl`}>
       {base.currentRoute === 'main' ? <Home /> : <Settings />}
     </div>
   );

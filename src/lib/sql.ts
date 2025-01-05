@@ -35,22 +35,28 @@ export async function createTables() {
 export type Settings = {
   autoStart: boolean;
   isFirstLoaded: boolean;
+  blinkoEndpoint: string;
+  blinkoToken: string;
+  shortcut: string;
 }
 
 export async function getSettings(): Promise<Settings | null> {
   try {
     const results = await select<{ value: string, key: string }>('SELECT * FROM settings');
-    console.log(results, 'results');
     const settings = results.reduce<{ [key: string]: any }>((acc, curr) => {
       if (curr.value === 'true' || curr.value === 'false') {
         acc[curr.key] = curr.value === 'true';
+      } else {
+        acc[curr.key] = curr.value;
       }
       return acc;
     }, {});
-    console.log(settings, 'settings');
     return {
       autoStart: settings.autoStart || false,
-      isFirstLoaded: settings.isFirstLoaded || false
+      isFirstLoaded: settings.isFirstLoaded || false,
+      blinkoEndpoint: settings.blinkoEndpoint || '',
+      blinkoToken: settings.blinkoToken || '',
+      shortcut: settings.shortcut || ''
     };
   } catch (err) {
     console.error(err);

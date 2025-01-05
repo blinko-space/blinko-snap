@@ -1,24 +1,37 @@
 import { useEffect } from "react";
-import { Switch } from "@nextui-org/react";
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 import { RootStore } from "@/store/root";
 import { BlinkoSnapStore } from "@/store/blinkoSnapStore";
+import Editor from "@/components/Editor";
+import { BlinkoStore } from "@/store/blinkoStore";
+import { BaseStore } from "@/store/baseStore";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 export const Home = observer(() => {
   const { t } = useTranslation();
   const blinkoSnap = RootStore.Get(BlinkoSnapStore);
-
+  const blinko = RootStore.Get(BlinkoStore);
   useEffect(() => {
-    console.log(123)
-    blinkoSnap.settings.call();
+    blinkoSnap.settings.call().then(res => {
+      if (!res.blinkoEndpoint || !res.blinkoToken) {
+        RootStore.Get(BaseStore).navigate('settings')
+      }
+    });
   }, []);
 
   return (
-    <div className="p-4 flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        Home
-      </div>
+    <div className="w-full h-full flex flex-col gap-4 no-drag">
+      <Editor mode="create" content="" onSend={async ({ content, files }) => {
+        await blinko.upsertNote.call({
+          content,
+          // @ts-ignore
+          attachments: files.map(i => { return { name: i.name, path: i.uploadPath, size: i.size, type: i.type } })
+        })
+        setTimeout(() => {
+          getCurrentWindow().hide()
+        }, 500)
+      }} />
     </div>
   );
 }); 

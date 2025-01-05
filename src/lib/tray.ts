@@ -1,6 +1,6 @@
 import { TrayIcon } from '@tauri-apps/api/tray';
 import { Menu, MenuItem } from '@tauri-apps/api/menu';
-import { getCurrentWindow, Window } from '@tauri-apps/api/window';
+import { Effect, getCurrentWindow, Window } from '@tauri-apps/api/window';
 import { Image } from '@tauri-apps/api/image';
 import { exit } from '@tauri-apps/plugin-process';
 import i18next from 'i18next';
@@ -38,7 +38,6 @@ export async function setupTray() {
           action: () => {
             mainWindow.show();
             base.navigate('main');
-            base.setVisible(true);
           },
         }),
         await MenuItem.new({
@@ -46,7 +45,6 @@ export async function setupTray() {
           text: i18next.t('hideWindow'),
           action: () => {
             getCurrentWindow().hide();
-            base.setVisible(false);
           },
         }),
         await MenuItem.new({
@@ -55,7 +53,6 @@ export async function setupTray() {
           action: () => {
             mainWindow.show();
             base.navigate('settings');
-            base.setVisible(true);
           }
         }),
         await MenuItem.new({

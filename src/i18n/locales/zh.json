@@ -15,5 +15,11 @@
   "about": "关于",
   "version": "版本",
   "autoStartDesc": "系统启动时自动运行应用",
-  "loadSettingsError": "加载设置失败"
-} 
+  "loadSettingsError": "加载设置失败",
+  "blinko-endpoint": "Blinko 终端",
+  "i-have-a-new-idea": "我有一个新主意",
+  "recording": "点击停止",
+  "shortcut": "快捷方式",
+  "create-successfully": "成功创建",
+  "delete-success": "删除成功"
+}

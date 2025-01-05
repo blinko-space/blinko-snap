@@ -15,5 +15,12 @@
   "about": "About",
   "version": "Version",
   "autoStartDesc": "Launch application on system startup",
-  "loadSettingsError": "Failed to load settings"
-} 
+  "loadSettingsError": "Failed to load settings",
+  "blinko-endpoint": "Blinko Endpoint",
+  "blinko-token": "Blinko Token",
+  "i-have-a-new-idea": "I have a new idea",
+  "recording": "Click to stop",
+  "shortcut": "Shortcut",
+  "create-successfully": "Create Successfully",
+  "delete-success": "Delete Success"
+}
