@@ -39,7 +39,7 @@ export const useEditorInit = (
         enable: true,
         type: 'markdown',
       },
-      height: '200px',
+      height: '150px',
       hint: {
         extend: Extend
       },

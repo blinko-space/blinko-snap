@@ -89,13 +89,13 @@ export const Settings = observer(() => {
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent">
-      <div className="p-6 w-full flex-1" data-tauri-drag-region>
+      <div className="p-4 w-full flex-1" data-tauri-drag-region>
         <div className="flex gap-2 items-center mb-4">
           <div className="h-[22px] w-[6px] rounded-full bg-primary"></div>
           <h1 className="text-2xl font-bold  select-none text-white">{t('settings')}</h1>
         </div>
 
-        <ScrollArea className={'h-[230px] pr-4'} onBottom={() => {
+        <ScrollArea className={'h-[230px] p-2'} onBottom={() => {
           console.log('onBottom')
         }}>
           <div className="flex flex-col gap-3">

@@ -5,10 +5,12 @@
   background: transparent!important;
 }
 html {
+  overflow: hidden;
 }
 
 body {
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #root {

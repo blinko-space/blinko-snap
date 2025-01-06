@@ -3,7 +3,7 @@
 use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::Manager;
 use tauri_plugin_autostart::MacosLauncher;
-
+use window_vibrancy::*;
 use tauri_plugin_global_shortcut::GlobalShortcutExt;
 
 fn main() {
@@ -22,6 +22,10 @@ fn main() {
             window.center().unwrap();
             window.show().unwrap();
             
+            #[cfg(target_os = "macos")]
+            apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, Some(NSVisualEffectState::Active), Some(10.0))
+                .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
+
             // let window_clone = window.clone();
             // window.on_window_event(move |event| {
             //     if let tauri::WindowEvent::Focused(focused) = event {

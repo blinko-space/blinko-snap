@@ -10,16 +10,17 @@
     "frontendDist": "../dist"
   },
   "app": {
+    "macOSPrivateApi": true,
     "windows": [
       {
         "skipTaskbar": true,
         "decorations": false,
         "fullscreen": false,
-        "height": 300,
-        "width": 600,
+        "height": 250,
+        "width": 500,
         "resizable": false,
         "center": true,
-        "title": "blinko-snap",
+        "title": "Blinko Snap",
         "visible": false,
         "maximized": false,
         "transparent": true,
