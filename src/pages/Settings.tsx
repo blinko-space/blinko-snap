@@ -9,6 +9,11 @@ import { register, unregister } from '@tauri-apps/plugin-global-shortcut';
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
 import { BaseStore } from "@/store/baseStore";
 import { useRecordHotkeys } from 'react-hotkeys-hook';
+import { check } from '@tauri-apps/plugin-updater'
+import { relaunch } from '@tauri-apps/plugin-process'
+
+import { getVersion } from '@tauri-apps/api/app';
+import { ScrollArea } from "@/components/Common/ScrollArea";
 
 const SettingBox = "flex flex-row gap-2 w-full justify-between"
 const SettingTitle = "text-md font-bold text-foreground"
@@ -17,9 +22,13 @@ export const Settings = observer(() => {
   const { t } = useTranslation();
   const blinkoSnap = RootStore.Get(BlinkoSnapStore);
   const [keys, { start, stop, isRecording }] = useRecordHotkeys();
+  const [currentVersion, setCurrentVersion] = useState('');
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     blinkoSnap.settings.call();
+    getVersion().then(setCurrentVersion);
   }, []);
 
   useEffect(() => {
@@ -58,6 +67,26 @@ export const Settings = observer(() => {
     }
   };
 
+  const checkForUpdates = async () => {
+    try {
+      setChecking(true);
+      const update = await check()
+      if (update?.available) {
+        if (window.confirm(t('newVersionAvailable'))) {
+          await update.downloadAndInstall()
+          await relaunch()
+        }
+      } else {
+        // alert(t('noUpdatesAvailable'));
+      }
+    } catch (error) {
+      console.error('更新检查失败:', error);
+      // alert(t('updateCheckFailed'));
+    } finally {
+      setChecking(false);
+    }
+  };
+
   return (
     <div className="w-full h-full flex flex-col bg-transparent">
       <div className="p-6 w-full flex-1" data-tauri-drag-region>
@@ -66,69 +95,88 @@ export const Settings = observer(() => {
           <h1 className="text-2xl font-bold  select-none text-white">{t('settings')}</h1>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className={SettingBox}>
-            <p className={`${SettingTitle} select-none`}>{t('autoStart')}</p>
-            <div className="pointer-events-auto">
-              <Switch
-                isSelected={blinkoSnap.settings.value?.autoStart}
-                onValueChange={(checked) => {
-                  blinkoSnap.setAutoStart(checked)
-                  if (checked) {
-                    enable()
-                  } else {
-                    disable()
-                  }
-                }}
-                color="primary"
-                size="lg"
-                className="gap-2"
-              />
+        <ScrollArea className={'h-[230px] pr-4'} onBottom={() => {
+          console.log('onBottom')
+        }}>
+          <div className="flex flex-col gap-3">
+            <div className={SettingBox}>
+              <p className={`${SettingTitle} select-none`}>{t('autoStart')}</p>
+              <div className="pointer-events-auto">
+                <Switch
+                  isSelected={blinkoSnap.settings.value?.autoStart}
+                  onValueChange={(checked) => {
+                    blinkoSnap.setAutoStart(checked)
+                    if (checked) {
+                      enable()
+                    } else {
+                      disable()
+                    }
+                  }}
+                  color="primary"
+                  size="lg"
+                  className="gap-2"
+                />
+              </div>
             </div>
-          </div>
-          <div className={SettingBox}>
-            <p className={`${SettingTitle} select-none`}>{t('shortcut')}</p>
-            <div className="pointer-events-auto flex items-center gap-2">
-              <div
-                onClick={handleShortcutChange}
-                className={`cursor-pointer ${isRecording ? 'bg-red-500 text-white' : 'bg-primary text-primary-foreground'}  rounded-xl px-3 py-2`}
-              >
-                {isRecording
-                  ? (keys.size > 0 ? Array.from(keys).join('+').toUpperCase() : t('recording'))
-                  : (blinkoSnap.settings.value?.shortcut.toUpperCase() || 'Control+Space'.toUpperCase())
-                }
+            <div className={SettingBox}>
+              <p className={`${SettingTitle} select-none`}>{t('shortcut')}</p>
+              <div className="pointer-events-auto flex items-center gap-2">
+                <div
+                  onClick={handleShortcutChange}
+                  className={`cursor-pointer ${isRecording ? 'bg-red-500 text-white' : 'bg-primary text-primary-foreground'}  rounded-xl px-3 py-2`}
+                >
+                  {isRecording
+                    ? (keys.size > 0 ? Array.from(keys).join('+').toUpperCase() : t('recording'))
+                    : (blinkoSnap.settings.value?.shortcut.toUpperCase() || 'Control+Space'.toUpperCase())
+                  }
+                </div>
+              </div>
+            </div>
+            <div className={SettingBox}>
+              <p className={`${SettingTitle} select-none`}>{t('blinko-endpoint')}</p>
+              <div className="pointer-events-auto">
+                <Input
+                  className="max-w-[300px]"
+                  placeholder="http://127.0.0.1:1111"
+                  value={blinkoSnap.settings.value?.blinkoEndpoint}
+                  onChange={async (e) => {
+                    await setSetting('blinkoEndpoint', e.target.value)
+                    blinkoSnap.settings.call()
+                  }}
+                />
+              </div>
+            </div>
+            <div className={SettingBox}>
+              <p className={`${SettingTitle} select-none`}>{t('blinko-token')}</p>
+              <div className="pointer-events-auto">
+                <Input
+                  className="max-w-[300px]"
+                  placeholder="eyJhbG..."
+                  value={blinkoSnap.settings.value?.blinkoToken}
+                  onChange={async (e) => {
+                    await setSetting('blinkoToken', e.target.value)
+                    blinkoSnap.settings.call()
+                  }}
+                />
+              </div>
+            </div>
+            <div className={SettingBox}>
+              <div className="flex flex-col">
+                <p className={`${SettingTitle} select-none`}>{t('version')}</p>
+                <p className="text-sm text-gray-400">v{currentVersion}</p>
+              </div>
+              <div className="pointer-events-auto">
+                <Button
+                  color="primary"
+                  onPress={checkForUpdates}
+                  isLoading={checking}
+                >
+                  {checking ? t('checking') : t('checkForUpdates')}
+                </Button>
               </div>
             </div>
           </div>
-          <div className={SettingBox}>
-            <p className={`${SettingTitle} select-none`}>{t('blinko-endpoint')}</p>
-            <div className="pointer-events-auto">
-              <Input
-                className="max-w-[300px]"
-                placeholder="http://127.0.0.1:1111"
-                value={blinkoSnap.settings.value?.blinkoEndpoint}
-                onChange={async (e) => {
-                  await setSetting('blinkoEndpoint', e.target.value)
-                  blinkoSnap.settings.call()
-                }}
-              />
-            </div>
-          </div>
-          <div className={SettingBox}>
-            <p className={`${SettingTitle} select-none`}>{t('blinko-token')}</p>
-            <div className="pointer-events-auto">
-              <Input
-                className="max-w-[300px]"
-                placeholder="eyJhbG..."
-                value={blinkoSnap.settings.value?.blinkoToken}
-                onChange={async (e) => {
-                  await setSetting('blinkoToken', e.target.value)
-                  blinkoSnap.settings.call()
-                }}
-              />
-            </div>
-          </div>
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );

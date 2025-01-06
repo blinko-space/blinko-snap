@@ -95,13 +95,15 @@ export class BaseStore implements Store {
         this.initTheme(),
         initialize(),  // Database initialization
         setupTray(),     // System tray setup
-
       ]);
 
       const settings = await RootStore.Get(BlinkoSnapStore).settings.call();
       if (!settings?.isFirstLoaded) {
         this.navigate('settings');
         await setSetting('isFirstLoaded', 'true');
+      }
+      if(settings?.language){
+        i18next.changeLanguage(settings.language)
       }
       if (settings?.shortcut) {
         this.registerShortcut(settings.shortcut)

@@ -21,5 +21,7 @@
   "recording": "点击停止",
   "shortcut": "快捷方式",
   "create-successfully": "成功创建",
-  "delete-success": "删除成功"
+  "delete-success": "删除成功",
+  "checkForUpdates": "检查更新",
+  "checking": "检查"
 }

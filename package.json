@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:tauri": "pnpm run tauri dev",
-    "dev:tauri:build": "pnpm run tauri build",
+    "tauri:build": "pnpm run tauri build",
+    "build:debug": "pnpm run tauri build --debug",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
@@ -25,6 +26,7 @@
     "@tauri-apps/plugin-process": "^2.2.0",
     "@tauri-apps/plugin-shell": "^2.2.0",
     "@tauri-apps/plugin-sql": "^2.2.0",
+    "@tauri-apps/plugin-updater": "^2.3.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

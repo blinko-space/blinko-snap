@@ -8,6 +8,7 @@
   "permissions": [
     "core:default",
     "opener:default",
+    "updater:default",
     "core:image:default",
     "core:window:allow-show",
     "core:window:allow-hide",

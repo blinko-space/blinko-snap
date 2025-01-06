@@ -45,40 +45,20 @@ const ImageRender = observer((props: IProps) => {
   const { files, preview = false, columns } = props
   const images = files?.filter(i => i.previewType == 'image')
 
-  const imageHeight = useMemo(() => {
-    if (!preview) {
-      return 'h-[60px] w-[60px]'
-    }
-
-    const imageLength = images?.length
-    if (columns) {
-      return `max-h-[100px] w-auto`
-    }
-    if (imageLength == 1) {
-      return `h-[200px] max-h-[200px] md:max-w-[200px]`
-    }
-    if (imageLength > 1 && imageLength <= 5) {
-      return `md:h-[180px] h-[160px]`
-    }
-    if (imageLength > 5) {
-      return `lg:h-[160px] md:h-[120px] h-[100px]`
-    }
-    return ''
-  }, [images, preview, columns])
 
   const renderImage = (file: FileType) => (
-    <div className={`relative group ${!preview ? 'min-w-[60px] flex-shrink-0' : 'w-full'} ${imageHeight}`}>
+    <div className={`relative group w-[60px]`}>
       {file.uploadPromise?.loading?.value && (
         <div className='absolute inset-0 flex items-center justify-center w-full h-full'>
           <Icon icon="line-md:uploading-loop" width="40" height="40" />
         </div>
       )}
-      <div className='w-full'>
+      <div className='w-full flex items-center'>
         <PhotoView src={file.preview}>
-          <div>
+          <div className='w-full'>
             <ImageThumbnailRender
               src={file.preview}
-              className={`mb-4 ${imageHeight} object-cover md:w-[1000px]`}
+              className={`mb-4 object-cover md:w-[1000px] h-[60px]`}
             />
           </div>
         </PhotoView>
@@ -90,10 +70,12 @@ const ImageRender = observer((props: IProps) => {
   )
 
   return (
-    <PhotoProvider>
-      {
-        images?.map(renderImage)
-      }
+    <PhotoProvider className='w-full flex gap-2'>
+      <div className='w-full flex gap-2'>
+        {
+          images?.map(renderImage)
+        }
+      </div>
     </PhotoProvider>
   )
 })

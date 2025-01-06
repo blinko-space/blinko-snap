@@ -12,7 +12,7 @@ export async function initializeI18n() {
         en: { translation: en },
         zh: { translation: zh }
       },
-      lng: 'zh', // Default language
+      lng: 'en',
       fallbackLng: 'en',
       interpolation: {
         escapeValue: false

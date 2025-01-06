@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "blinko-snap",
+  "productName": "Blinko Snap",
   "version": "0.1.0",
   "identifier": "com.blinko-snap.app",
   "build": {
@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "skipTaskbar": true,
         "decorations": false,
         "fullscreen": false,
         "height": 300,
@@ -24,17 +25,24 @@
         "transparent": true,
         "alwaysOnTop": true,
         "windowEffects": {
-          "effects": ["mica"]
+          "effects": [
+            "mica"
+          ]
         }
       }
     ],
     "security": {
       "csp": null
-    }
+    },
+    "withGlobalTauri": true
   },
   "bundle": {
+    "createUpdaterArtifacts": true,
     "active": true,
     "targets": "all",
+    "resources": [
+      "icons/*"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -48,6 +56,13 @@
       "sqlite": {
         "path": "blinko.db"
       }
+    },
+    "updater": {
+      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJGRjkxRUZDMkQ5REI2NDIKUldSQ3RwMHQvQjc1THpMMmVhWmczb1ZJRDFlSXQxOWlGSDRqeHhSWFVDQlhJUnFzbndUeGRxUWQK",
+      "endpoints": [
+        "https://github.com/blinko-space/blinko-snap/releases/latest/download/latest.json"
+      ]
     }
   }
 }

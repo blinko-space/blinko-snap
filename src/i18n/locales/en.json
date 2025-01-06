@@ -22,5 +22,8 @@
   "recording": "Click to stop",
   "shortcut": "Shortcut",
   "create-successfully": "Create Successfully",
-  "delete-success": "Delete Success"
+  "delete-success": "Delete Success",
+  "newVersionAvailable": "New Version Available",
+  "checking": "Checking",
+  "checkForUpdates": "Check for updates"
 }

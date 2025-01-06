@@ -38,6 +38,7 @@ export type Settings = {
   blinkoEndpoint: string;
   blinkoToken: string;
   shortcut: string;
+  language: string;
 }
 
 export async function getSettings(): Promise<Settings | null> {
@@ -56,7 +57,8 @@ export async function getSettings(): Promise<Settings | null> {
       isFirstLoaded: settings.isFirstLoaded || false,
       blinkoEndpoint: settings.blinkoEndpoint || '',
       blinkoToken: settings.blinkoToken || '',
-      shortcut: settings.shortcut || ''
+      shortcut: settings.shortcut || '',
+      language: settings.language || 'en'
     };
   } catch (err) {
     console.error(err);
