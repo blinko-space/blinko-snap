@@ -1,4 +1,3 @@
-import { RootStore } from "@/store"
 import { Icon } from "@iconify/react"
 import { observer } from "mobx-react-lite"
 import { useTranslation } from "react-i18next"

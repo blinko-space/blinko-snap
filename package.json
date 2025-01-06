@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:tauri": "pnpm run tauri dev",
+    "dev:tauri:build": "pnpm run tauri build",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
