@@ -27,7 +27,6 @@ Download the latest version from the [Releases](https://github.com/blinko-space/
 
 - Windows 10/11
 - macOS 10.15+
-- Linux (with desktop environment)
 
 ## 🎯 Quick Start
 
