@@ -80,7 +80,6 @@ export const Settings = observer(() => {
         // alert(t('noUpdatesAvailable'));
       }
     } catch (error) {
-      console.error('更新检查失败:', error);
       // alert(t('updateCheckFailed'));
     } finally {
       setChecking(false);
@@ -92,10 +91,10 @@ export const Settings = observer(() => {
       <div className="p-4 w-full flex-1" data-tauri-drag-region>
         <div className="flex gap-2 items-center mb-4">
           <div className="h-[22px] w-[6px] rounded-full bg-primary"></div>
-          <h1 className="text-2xl font-bold  select-none text-white">{t('settings')}</h1>
+          <h1 className="text-xl font-bold  select-none text-white">{t('settings')}</h1>
         </div>
 
-        <ScrollArea className={'h-[230px] p-2'} onBottom={() => {
+        <ScrollArea className={'h-[170px] p-2'} onBottom={() => {
           console.log('onBottom')
         }}>
           <div className="flex flex-col gap-3">
