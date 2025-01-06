@@ -5,6 +5,12 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
       - '*' # Push events to matching any tag format, i.e. 1.0, 20.15.10
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'The tag version (such as : v1.0.0)'
+        required: true
+        type: string
 
 jobs:
   publish-tauri:
@@ -26,6 +32,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: setup node
         uses: actions/setup-node@v4
