@@ -133,15 +133,19 @@ export class BlinkoStore implements Store {
   })
 
   loadAllData() {
-    this.tagList.call()
-    const blinkoSnap = RootStore.Get(BlinkoSnapStore) 
-    this.config.call().then(async res => {
-      await blinkoSnap.settings.call()
-      if(res?.data?.language != blinkoSnap.settings.value?.language){
-        setSetting('language', res?.data?.language)
-        i18next.changeLanguage(res?.data?.language)
-      }
-    })
+    try {
+      // this.tagList.call()
+      const blinkoSnap = RootStore.Get(BlinkoSnapStore)
+      this.config.call().then(async res => {
+        await blinkoSnap.settings.call()
+        if (res?.data?.language != blinkoSnap.settings.value?.language) {
+          setSetting('language', res?.data?.language)
+          i18next.changeLanguage(res?.data?.language)
+        }
+      })
+    } catch (error) {
+
+    }
   }
 
   constructor() {

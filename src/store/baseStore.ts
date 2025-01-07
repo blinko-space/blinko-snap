@@ -71,11 +71,14 @@ export class BaseStore implements Store {
   }
 
   async registerShortcut(shortcut: string) {
-    await register(shortcut, (event) => {
-      if (event.state === 'Pressed') {
-        this.toggleVisible()
-      }
-    })
+    try {
+      await register(shortcut, (event) => {
+        if (event.state === 'Pressed') {
+          this.toggleVisible()
+        }
+      })
+    } catch (error) {
+    }
   }
 
   async initTheme() {
@@ -102,7 +105,7 @@ export class BaseStore implements Store {
         this.navigate('settings');
         await setSetting('isFirstLoaded', 'true');
       }
-      if(settings?.language){
+      if (settings?.language) {
         i18next.changeLanguage(settings.language)
       }
       if (settings?.shortcut) {
@@ -113,7 +116,7 @@ export class BaseStore implements Store {
       RootStore.Get(BlinkoStore).loadAllData()
     } catch (error) {
       console.error('Application initialization failed:', error);
-      throw error;
+      // throw error;
     }
   }
 } 

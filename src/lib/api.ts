@@ -9,6 +9,9 @@ interface ApiConfig extends AxiosRequestConfig {
 export const api = async (url: string, method: 'GET' | 'POST' = 'GET', data?: any, config: ApiConfig = {}) => {
   const endpoint = RootStore.Get(BlinkoSnapStore).settings.value?.blinkoEndpoint
   const token = RootStore.Get(BlinkoSnapStore).settings.value?.blinkoToken
+  if (!endpoint || !token) {
+    return null
+  }
   const _URL = new URL(`${endpoint?.endsWith('/') ? endpoint : endpoint + '/'}api${url}`)
 
   const headers: Record<string, string> = {

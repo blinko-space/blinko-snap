@@ -13,11 +13,15 @@ export const Home = observer(() => {
   const blinkoSnap = RootStore.Get(BlinkoSnapStore);
   const blinko = RootStore.Get(BlinkoStore);
   useEffect(() => {
-    blinkoSnap.settings.call().then(res => {
-      if (!res.blinkoEndpoint || !res.blinkoToken) {
-        RootStore.Get(BaseStore).navigate('settings')
-      }
-    });
+    try {
+      blinkoSnap.settings.call().then(res => {
+        if (res?.blinkoEndpoint || res?.blinkoToken) {
+          RootStore.Get(BaseStore).navigate('settings')
+        }
+      });
+    } catch (err) {
+
+    }
   }, []);
 
   return (
