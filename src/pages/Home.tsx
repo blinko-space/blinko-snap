@@ -15,7 +15,8 @@ export const Home = observer(() => {
   useEffect(() => {
     try {
       blinkoSnap.settings.call().then(res => {
-        if (res?.blinkoEndpoint || res?.blinkoToken) {
+        console.log(res)
+        if (!res?.blinkoEndpoint || !res?.blinkoToken) {
           RootStore.Get(BaseStore).navigate('settings')
         }
       });
