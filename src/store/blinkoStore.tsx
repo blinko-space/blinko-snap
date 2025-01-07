@@ -140,7 +140,6 @@ export class BlinkoStore implements Store {
       if(res?.data?.language != blinkoSnap.settings.value?.language){
         setSetting('language', res?.data?.language)
         i18next.changeLanguage(res?.data?.language)
-        relaunch()
       }
     })
   }

@@ -7,6 +7,7 @@ import i18next from 'i18next';
 import { BaseStore } from '@/store/baseStore';
 import { RootStore } from '@/store/root';
 import { resolveResource } from '@tauri-apps/api/path';
+import { path as tauriPath } from '@tauri-apps/api'; 
 
 // Unique identifier for the system tray
 const TRAY_ID = 'blinko-snap-tray';
@@ -67,7 +68,8 @@ export async function setupTray() {
     });
 
     // Load tray icon
-    const icon = await Image.fromPath('icons/icon.png');
+    const resolvedPath = await tauriPath.resolveResource('icons/icon.png');
+    const icon = await Image.fromPath(resolvedPath);
 
     // Create new tray instance
     const tray = await TrayIcon.new({
