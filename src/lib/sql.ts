@@ -39,6 +39,7 @@ export type Settings = {
   blinkoToken: string;
   shortcut: string;
   language: string;
+  hideDockIcon: boolean;
 }
 
 export async function getSettings(): Promise<Settings | null> {
@@ -58,7 +59,8 @@ export async function getSettings(): Promise<Settings | null> {
       blinkoEndpoint: settings.blinkoEndpoint || '',
       blinkoToken: settings.blinkoToken || '',
       shortcut: settings.shortcut || '',
-      language: settings.language || 'en'
+      language: settings.language || 'en',
+      hideDockIcon: settings.hideDockIcon !== undefined ? settings.hideDockIcon : true
     };
   } catch (err) {
     console.error(err);

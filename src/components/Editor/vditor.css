@@ -1,5 +1,6 @@
 .vditor {
   border: none;
+  height: auto !important;
 }
 
 .vditor-content {
@@ -46,8 +47,7 @@
   padding-right: 10px !important;
   background-color: transparent;
   color: var(--foreground);
-  max-height: 80vh;
-  min-height: var(--min-editor-height);
+  min-height: 150px;
   padding-top: 5px;
   padding-bottom: 5px;
 }

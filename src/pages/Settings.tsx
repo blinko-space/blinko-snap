@@ -13,7 +13,10 @@ import { check } from '@tauri-apps/plugin-updater'
 import { relaunch } from '@tauri-apps/plugin-process'
 
 import { getVersion } from '@tauri-apps/api/app';
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { ScrollArea } from "@/components/Common/ScrollArea";
+import { Icon } from "@iconify/react";
+import { invoke } from '@tauri-apps/api/core';
 
 const SettingBox = "flex flex-row gap-2 w-full justify-between"
 const SettingTitle = "text-md font-bold text-foreground"
@@ -92,9 +95,15 @@ export const Settings = observer(() => {
         <div className="flex gap-2 items-center mb-4">
           <div className="h-[22px] w-[6px] rounded-full bg-primary"></div>
           <h1 className="text-xl font-bold  select-none text-white">{t('settings')}</h1>
+          <div 
+            className="ml-auto cursor-pointer hover:bg-hover p-1 rounded-md"
+            onClick={() => getCurrentWindow().hide()}
+          >
+            <Icon icon="material-symbols:close" width="20" height="20" />
+          </div>
         </div>
 
-        <ScrollArea className={'h-[170px] p-2'} onBottom={() => {
+        <ScrollArea className={'h-[270px] p-2'} onBottom={() => {
           console.log('onBottom')
         }}>
           <div className="flex flex-col gap-3">
@@ -109,6 +118,26 @@ export const Settings = observer(() => {
                       enable()
                     } else {
                       disable()
+                    }
+                  }}
+                  color="primary"
+                  size="lg"
+                  className="gap-2"
+                />
+              </div>
+            </div>
+            <div className={SettingBox}>
+              <p className={`${SettingTitle} select-none`}>{t('hideDockIcon')}</p>
+              <div className="pointer-events-auto">
+                <Switch
+                  isSelected={blinkoSnap.settings.value?.hideDockIcon}
+                  onValueChange={async (checked) => {
+                    await blinkoSnap.setHideDockIcon(checked)
+                    // On macOS, we need to use a Rust command to control dock visibility
+                    try {
+                      await invoke('set_dock_visibility', { visible: !checked })
+                    } catch (error) {
+                      console.error('Failed to set dock visibility:', error)
                     }
                   }}
                   color="primary"
