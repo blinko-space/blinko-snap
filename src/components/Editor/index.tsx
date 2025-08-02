@@ -78,11 +78,11 @@ const Editor = observer(({ content, onChange, onSend, isSendLoading, originFiles
 
   return <Card
     shadow='none' {...getRootProps()}
-    className={`w-full h-full p-2 relative transition-all  overflow-visible rounded-[0] bg-transparent
+    className={`w-full h-full p-2 relative transition-all overflow-visible rounded-[0] bg-transparent flex flex-col
     ${isDragAccept ? 'border-2 border-green-500 border-dashed' : ''} `}>
 
     <div ref={cardRef}
-      className="overflow-visible relative"
+      className="overflow-y-auto overflow-x-hidden relative flex-1 min-h-0"
       onKeyDown={e => {
         store.handleKeyDown(e)
       }}>
@@ -93,13 +93,13 @@ const Editor = observer(({ content, onChange, onSend, isSendLoading, originFiles
 
     {/******************** AttchMent Render *****************/}
     {store.files.length > 0 && (
-      <div className='w-full my-2 mt-auto'>
+      <div className='w-full my-2 flex-shrink-0'>
         <AttachmentsRender files={store.files} onReorder={handleFileReorder} />
       </div>
     )}
 
     {/******************** Toolbar Render *****************/}
-    <div className={`flex w-full items-center gap-1 ${store.files.length > 0 ? 'mt-2' : 'mt-auto'}`}>
+    <div className={`flex w-full items-center gap-1 flex-shrink-0 ${store.files.length > 0 ? 'mt-2' : 'mt-2'}`}>
       <NoteTypeButton />
       <HashtagButton store={store} content={content} />
       <UploadButtons

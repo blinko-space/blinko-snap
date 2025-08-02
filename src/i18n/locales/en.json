@@ -1,5 +1,6 @@
 {
   "autoStart": "Auto Start",
+  "hideDockIcon": "Hide Dock Icon",
   "enabled": "Enabled",
   "disabled": "Disabled",
   "showWindow": "Show Window",

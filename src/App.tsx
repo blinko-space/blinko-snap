@@ -22,7 +22,7 @@ const AppContent = observer(() => {
   }, []);
 
   return (
-    <div data-tauri-drag-region className={`${base.theme} h-screen w-screen flex items-center justify-center rounded-2xl`}>
+    <div data-tauri-drag-region className={`${base.theme} h-screen w-screen flex items-center justify-center rounded-2xl overflow-hidden`}>
       {base.currentRoute === 'main' ? <Home /> : <Settings />}
     </div>
   );

@@ -13,7 +13,27 @@ body {
   overflow-y: hidden;
 }
 
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Prevent drag on interactive elements */
+input, textarea, button, select, .vditor, .vditor-content {
+  -webkit-app-region: no-drag;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .rounded-window {

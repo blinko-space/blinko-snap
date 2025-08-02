@@ -22,4 +22,10 @@ export class BlinkoSnapStore implements Store {
     await setSetting('autoStart', value.toString());
     this.settings.call();
   }
+
+  // Update hideDockIcon setting
+  async setHideDockIcon(value: boolean) {
+    await setSetting('hideDockIcon', value.toString());
+    this.settings.call();
+  }
 }

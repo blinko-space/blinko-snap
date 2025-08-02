@@ -9,6 +9,7 @@ import { BlinkoSnapStore } from './blinkoSnapStore';
 import { BlinkoStore } from './blinkoStore';
 import { register, unregister } from '@tauri-apps/plugin-global-shortcut'
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
 
 export interface Route {
   title: string;
@@ -113,6 +114,16 @@ export class BaseStore implements Store {
       } else {
         this.registerShortcut('CommandOrControl+Space')
       }
+      
+      // Apply dock visibility setting
+      // Default to hidden if not set
+      const shouldHideDock = settings?.hideDockIcon !== undefined ? settings.hideDockIcon : true;
+      try {
+        await invoke('set_dock_visibility', { visible: !shouldHideDock })
+      } catch (error) {
+        console.error('Failed to set initial dock visibility:', error)
+      }
+      
       RootStore.Get(BlinkoStore).loadAllData()
     } catch (error) {
       console.error('Application initialization failed:', error);
